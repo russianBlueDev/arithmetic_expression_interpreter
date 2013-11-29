@@ -1,3 +1,9 @@
+
+if test -f tests/tests.log
+then
+    rm tests/tests.log
+fi
+
 for i in tests/*.test
 do
     if test -f $i

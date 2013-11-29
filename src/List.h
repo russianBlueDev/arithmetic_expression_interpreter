@@ -1,6 +1,7 @@
 /*
 	Simple Linked List for generic data
 */
+
 #ifndef LIST_H
 #define LIST_H
 
@@ -12,6 +13,10 @@ struct List {
 	struct ListNode* head;
 	size_t size;
 };
+
+List* List_new();
+
+void List_delete(List** self);
 
 int List_add(List* self, void* data);
 
