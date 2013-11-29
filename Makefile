@@ -9,7 +9,7 @@ OBJDIR   = obj
 BINDIR   = bin
 TESTDIR  = tests
 
-TARGET 	 = $(BINDIR)/arithExprInterpreter
+TARGET 	 = $(BINDIR)/arithExprInterpreter.out
 
 SRC 	 = $(wildcard $(SRCDIR)/*.c)
 OBJ 	 = $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
