@@ -21,7 +21,7 @@ void addOnEmptyList(List* l) {
 	int* x = malloc(sizeof(int));
 	*x = 5;
 	List_add(l, x);
-	assert( ((int*)List_head(l)) == x);
+	assert(List_head(l) == x);
 	assert( *((int*)List_head(l)) == 5);
 	free(x);
 }
@@ -39,16 +39,16 @@ void addAndRemove(List* l) {
 	*y = 2;
 
 	List_add(l, x);
-	assert( ((int*)List_head(l)) == x);
+	assert(List_head(l) == x);
 	assert(List_size(l) == 1);
 	List_add(l, y);
-	assert( ((int*)List_head(l)) == x);
+	assert(List_head(l) == x);
 	assert(List_size(l) == 2);
 	List_removeHead(l);
-	assert( ((int*)List_head(l)) == y);
+	assert(List_head(l) == y);
 	assert(List_size(l) == 1);
 	List_removeHead(l);
-	assert( ((int*)List_head(l)) == NULL);
+	assert(List_head(l) == NULL);
 	assert(List_size(l) == 0);
 
 	free(x);
