@@ -34,3 +34,11 @@ $>> abs(x)
 ans = 1
 ```
 
+Compilation
+===========
+
+You must have
+* gcc (on MAC OS make sure it's not LLVM hidden behind gcc cmd)
+* gcov
+* lcov (can be installed on MAC OS by compiling source and remove -D option from lcov/bin/install.sh)
+
