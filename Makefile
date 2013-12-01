@@ -47,10 +47,15 @@ clean:
 	@rm -rf $(OBJDIR)/*.o
 	@rm -rf $(TESTDIR)/*.test
 	@rm -rf $(TESTDIR)/*.dSYM
-	@rm -rf $(COVDIR)/*.g*
 	@rm -rf $(OBJDIR)/*.g*
+	@mv $(COVDIR)/runCoverage.sh .
+	@rm -rf $(COVDIR)/*
+	@mv runCoverage.sh $(COVDIR)/
+	@rm -f $(SRCDIR)/*.html
+	@rm -f $(TESTDIR)/*.html
 	@echo "Cleanup complete!"
 
 remove: clean
 	@rm -rf $(TARGET)
+	@rm -rf $(BINDIR)/*.dSYM
 	@echo "Removal complete!"
