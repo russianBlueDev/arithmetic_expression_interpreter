@@ -1,3 +1,4 @@
+#!/bin/sh
 
 if test -f tests/tests.log
 then

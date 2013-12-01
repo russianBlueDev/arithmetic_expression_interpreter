@@ -1,13 +1,14 @@
-CC       = gcc
-CFLAGS   = -g -std=c99 -Wall -I$(SRCDIR)
+CC       = gcc-4.2
+CFLAGS   = -g -std=c99 -Wall -I$(SRCDIR) --coverage
 
-LINKER   = gcc -o
-LFLAGS   = -Wall
+LINKER   = gcc-4.2 -o
+LFLAGS   = -Wall --coverage
 
 SRCDIR   = src
 OBJDIR   = obj
 BINDIR   = bin
 TESTDIR  = tests
+COVDIR	 = coverage
 
 TARGET 	 = $(BINDIR)/arithExprInterpreter.out
 
@@ -22,7 +23,7 @@ TESTS 	 = $(TESTSRC:%.c=%.test)
 all: $(TARGET) test
 
 $(TARGET): $(BINDIR)/main.c $(OBJ)
-	@$(LINKER) $@ $^ $(LFLAGS)
+	@$(LINKER) $@ $^ $(CFLAGS) $(LFLAGS)
 	@echo "Linking successfull"
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
@@ -33,6 +34,8 @@ test: $(TESTS)
 	@echo
 	@echo "Running now unit tests:"
 	@sh ./tests/runtests.sh
+	@echo "Generating code coverage"
+	@sh ./coverage/runCoverage.sh
 
 $(TESTDIR)/%.test: $(TESTDIR)/%.c $(OBJ)
 	@$(CC) -o $@ $^ $(CFLAGS)
@@ -44,6 +47,8 @@ clean:
 	@rm -rf $(OBJDIR)/*.o
 	@rm -rf $(TESTDIR)/*.test
 	@rm -rf $(TESTDIR)/*.dSYM
+	@rm -rf $(COVDIR)/*.g*
+	@rm -rf $(OBJDIR)/*.g*
 	@echo "Cleanup complete!"
 
 remove: clean

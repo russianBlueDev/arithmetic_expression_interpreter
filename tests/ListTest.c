@@ -4,7 +4,7 @@
 
 #include <stdlib.h>
 #include <assert.h>
-#include <List.h>
+#include "List.h"
 
 // TestArray is an pointer to function taking a list and returning void
 typedef void (*TestArray)(List*);
@@ -37,6 +37,8 @@ void addAndRemove(List* l) {
 	*x = 5;
 	int* y = malloc(sizeof(int));
 	*y = 2;
+	int* z = malloc(sizeof(int));
+	*z = 3;
 
 	List_add(l, x);
 	assert(List_head(l) == x);
@@ -44,8 +46,14 @@ void addAndRemove(List* l) {
 	List_add(l, y);
 	assert(List_head(l) == x);
 	assert(List_size(l) == 2);
+	List_add(l, z);
+	assert(List_head(l) == x);
+	assert(List_size(l) == 3);
 	List_removeHead(l);
 	assert(List_head(l) == y);
+	assert(List_size(l) == 2);
+	List_removeHead(l);
+	assert(List_head(l) == z);
 	assert(List_size(l) == 1);
 	List_removeHead(l);
 	assert(List_head(l) == NULL);
@@ -53,6 +61,7 @@ void addAndRemove(List* l) {
 
 	free(x);
 	free(y);
+	free(z);
 }
 
 int main(void) {
