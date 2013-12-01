@@ -38,7 +38,8 @@ Compilation
 ===========
 
 You must have
-* gcc (on MAC OS make sure it's not LLVM hidden behind gcc cmd)
+* gcc (on MAC OS make sure it's not LLVM hidden behind gcc cmd). For now, in the Makefile, it's gcc-4.2
 * gcov
 * lcov (can be installed on MAC OS by compiling source and remove -D option from lcov/bin/install.sh)
+* valgrind
 
