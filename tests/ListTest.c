@@ -58,6 +58,18 @@ void addAndRemove(List* l) {
 	List_removeHead(l);
 	assert(List_head(l) == NULL);
 	assert(List_size(l) == 0);
+	List_add(l, x);
+	assert(List_head(l) == x);
+	assert(List_size(l) == 1);
+	List_add(l, y);
+	assert(List_head(l) == x);
+	assert(List_size(l) == 2);
+	List_removeHead(l);
+	assert(List_head(l) == y);
+	assert(List_size(l) == 1);
+	List_removeHead(l);
+	assert(List_head(l) == NULL);
+	assert(List_size(l) == 0);
 
 	free(x);
 	free(y);

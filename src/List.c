@@ -3,7 +3,7 @@
 */
 
 #include <stdlib.h>
-#include "List.h"
+#include <List.h>
 
 //typedef struct ListNode ListNode;
 
@@ -15,6 +15,7 @@ struct ListNode {
 List* List_new() {
 	List* l = malloc(sizeof(List));
 	l->head = NULL;
+	l->last = NULL;
 	l->size = 0;
 	return l;
 }
@@ -29,29 +30,25 @@ void List_delete(List** self) {
 
 int List_add(List* self, void* data) {
 
-	struct ListNode* last = NULL;
+	struct ListNode* newLast = NULL;
 
-	// If list is empty
-	if(self->head == NULL) {
-		self->head = malloc(sizeof(struct ListNode)); 
-		last = self->head;
+	// If the list is not empty (i.e. there is a last element)
+	if(self->last) {
+		self->last->next = malloc(sizeof(struct ListNode));
+		self->last = self->last->next;
+		newLast = self->last;
 	}
 
-	// else create new ListNode as last element
+	// else create new head/last element
 	else {
-		// get the last ListNode
-		last = self->head;
-		while(last->next != NULL) {
-			last = last->next;
-		}
-		// Create the new element
-		last->next = malloc(sizeof(struct ListNode));
-		last = last->next;
+		self->head = malloc(sizeof(struct ListNode));
+		self->last = self->head;
+		newLast = self->head;
 	}
 
 	// set its data
-	last->data = data;
-	last->next = NULL;
+	newLast->data = data;
+	newLast->next = NULL;
 	self->size++;
 
 	return 0;
@@ -74,6 +71,10 @@ int List_removeHead(List* self) {
 		self->head = toFree->next;
 		self->size--;
 		free(toFree);
+
+		if(List_size(self) == 0) {
+			self->last = NULL;
+		}
 	}
 	return 0;
 }
