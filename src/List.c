@@ -12,11 +12,12 @@ struct ListNode {
 	void* data;
 };
 
-List* List_new() {
+List* List_new(void) {
 	List* l = malloc(sizeof(List));
 	l->head = NULL;
 	l->last = NULL;
 	l->size = 0;
+	l->modCount = 0;
 	return l;
 }
 
@@ -50,6 +51,7 @@ int List_add(List* self, void* data) {
 	newLast->data = data;
 	newLast->next = NULL;
 	self->size++;
+	self->modCount++;
 
 	return 0;
 }
@@ -70,6 +72,7 @@ int List_removeHead(List* self) {
 		struct ListNode* toFree = self->head;
 		self->head = toFree->next;
 		self->size--;
+		self->modCount--;
 		free(toFree);
 
 		if(List_size(self) == 0) {
@@ -77,4 +80,32 @@ int List_removeHead(List* self) {
 		}
 	}
 	return 0;
+}
+
+ListIterator* iterator(List* self) {
+	ListIterator* iter = malloc(sizeof(ListIterator));
+	iter->list = self;
+	iter->next = self->head;
+	iter->modCount = self->modCount;
+	return iter;
+}
+
+bool ListIterator_hasNext(ListIterator* self, bool* hasNext) {
+	if(self->modCount != self->list->modCount) {
+		return false;
+	} else {
+		*hasNext = self->next != NULL;
+		return true;
+	}
+}
+
+bool ListIterator_next(ListIterator* self, void** data) {
+	
+	if(self->modCount != self->list->modCount) {
+		return false;
+	} else {
+		*data = self->next->data;
+		self->next = self->next->next;
+		return true;
+	}
 }
