@@ -12,18 +12,17 @@ typedef struct List List;
 typedef struct ListIterator ListIterator;
 
 struct List {
-	struct ListNode* head;
-	struct ListNode* last;
-	size_t size;
-	size_t modCount;
+    struct ListNode* head;    
+    struct ListNode* last;
+    size_t size;
+    size_t modCount;
 };
 
 struct ListIterator {
-	struct List* list;
-	struct ListNode* next;
-	size_t modCount;
+    struct List* list;
+    struct ListNode* next;
+    size_t modCount;
 };
-
 
 // List methods
 List* List_new(void);
@@ -41,8 +40,12 @@ int List_removeHead(List* self);
 ListIterator* iterator(List* self);
 
 // ListIterator method
-bool ListIterator_hasNext(ListIterator* self, bool* hasNext);
+bool ListIterator_safeHasNext(ListIterator* self, bool* hasNext);
 
-bool ListIterator_next(ListIterator* self, void** data);
+bool ListIterator_safeNext(ListIterator* self, void** data);
+
+bool ListIterator_hasNext(ListIterator* self);
+
+void* ListIterator_next(ListIterator* self);
 
 #endif

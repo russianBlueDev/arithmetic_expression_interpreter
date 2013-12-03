@@ -3,9 +3,8 @@
 */
 
 #include <stdlib.h>
+#include <assert.h>
 #include <List.h>
-
-//typedef struct ListNode ListNode;
 
 struct ListNode {
 	struct ListNode* next;
@@ -90,7 +89,7 @@ ListIterator* iterator(List* self) {
 	return iter;
 }
 
-bool ListIterator_hasNext(ListIterator* self, bool* hasNext) {
+bool ListIterator_safeHasNext(ListIterator* self, bool* hasNext) {
 	if(self->modCount != self->list->modCount) {
 		return false;
 	} else {
@@ -99,7 +98,7 @@ bool ListIterator_hasNext(ListIterator* self, bool* hasNext) {
 	}
 }
 
-bool ListIterator_next(ListIterator* self, void** data) {
+bool ListIterator_safeNext(ListIterator* self, void** data) {
 	
 	if(self->modCount != self->list->modCount) {
 		return false;
@@ -108,4 +107,17 @@ bool ListIterator_next(ListIterator* self, void** data) {
 		self->next = self->next->next;
 		return true;
 	}
+}
+
+bool ListIterator_hasNext(ListIterator* self) {
+	bool hasNext = false;
+	assert(ListIterator_safeHasNext(self, &hasNext));
+	return hasNext;
+}
+
+void* ListIterator_next(ListIterator* self) {
+	void* data = NULL;
+	assert(ListIterator_hasNext(self));
+	assert(ListIterator_safeNext(self, &data));
+	return data;
 }

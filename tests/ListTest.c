@@ -90,13 +90,10 @@ void listIterator(List* l) {
 
 	ListIterator* iter = iterator(l);
 	int i = 1;
-	bool hasNext = false;
 	void* data = NULL;
-	while(ListIterator_hasNext(iter, &hasNext), hasNext) {
-		assert(ListIterator_next(iter, &data));
+	while(ListIterator_hasNext(iter)) {
+		data = ListIterator_next(iter);
 		assert( *((int*)(data)) == i);
-		assert(ListIterator_hasNext(iter, &hasNext));
-		ListIterator_hasNext(iter, &hasNext);
 		i++;
 	}
 
@@ -119,9 +116,9 @@ void listIteratorFailWhileModify(List* l) {
 	ListIterator* iter = iterator(l);
 	bool hasNext = false;
 	void* data = NULL;
-	while(ListIterator_hasNext(iter, &hasNext), hasNext) {
+	while(ListIterator_safeHasNext(iter, &hasNext), hasNext) {
 		List_removeHead(l);
-		assert(!ListIterator_next(iter, &data)); // should fail here
+		assert(!ListIterator_safeNext(iter, &data)); // should fail here
 		break;
 	}
 	free(iter);
@@ -139,13 +136,13 @@ void listIteratorFailWhileModify2(List* l) {
 	bool hasNext = false;
 	void* data = NULL;
 	int i = 1;
-	while(ListIterator_hasNext(iter, &hasNext), hasNext) { // should fail here on second iteration
+	while(ListIterator_safeHasNext(iter, &hasNext), hasNext) { // should fail here on second iteration
 		if(i == 2) { 
 			List_add(l, x); 
-			assert(!ListIterator_next(iter, &data));
+			assert(!ListIterator_safeNext(iter, &data));
 			break;
 		}
-		assert(ListIterator_next(iter, &data));
+		assert(ListIterator_safeNext(iter, &data));
 		i++;
 	}
 	free(iter);
@@ -161,10 +158,10 @@ void listIteratorFailWhileModify3(List* l) {
 	ListIterator* iter = iterator(l);
 	bool hasNext = false;
 	void* data = NULL;
-	while(ListIterator_hasNext(iter, &hasNext), hasNext) { // should fail here on second iteration
-		ListIterator_next(iter, &data);
+	while(ListIterator_safeHasNext(iter, &hasNext), hasNext) { // should fail here on second iteration
+		ListIterator_safeNext(iter, &data);
 		List_removeHead(l);
-		assert(!ListIterator_hasNext(iter, &hasNext));
+		assert(!ListIterator_safeHasNext(iter, &hasNext));
 		break;
 	}
 	free(iter);
