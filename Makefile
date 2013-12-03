@@ -1,5 +1,5 @@
 CC       = gcc-4.2
-CFLAGS   = -g -std=c99 -Wall -I$(SRCDIR) --coverage
+CFLAGS   = -g -std=c99 -Wall -Wextra -I$(SRCDIR) --coverage
 
 LINKER   = gcc-4.2 -o
 LFLAGS   = -Wall --coverage
