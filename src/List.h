@@ -8,21 +8,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-typedef struct List List;
-typedef struct ListIterator ListIterator;
-
-struct List {
-    struct ListNode* head;    
-    struct ListNode* last;
-    size_t size;
-    size_t modCount;
-};
-
-struct ListIterator {
-    struct List* list;
-    struct ListNode* next;
-    size_t modCount;
-};
+typedef struct _List List;
+typedef struct _ListIterator ListIterator;
 
 // List methods
 List* List_new(void);

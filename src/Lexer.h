@@ -5,7 +5,7 @@
 #ifndef LEXER_H
 #define LEXER_H
 
-#include "List.h"
+#include <List.h>
 
 typedef struct Token Token;
 
@@ -20,6 +20,6 @@ struct Token {
 };
 
 
-List run(const char* input);
+List* run(const char* input);
 
 #endif

@@ -4,11 +4,24 @@
 
 #include <stdlib.h>
 #include <assert.h>
-#include <List.h>
+#include "List.h"
 
 struct ListNode {
 	struct ListNode* next;
 	void* data;
+};
+
+struct _List {
+    struct ListNode* head;
+    struct ListNode* last;
+    size_t size;
+    size_t modCount;
+};
+
+struct _ListIterator {
+    List* list;
+    struct ListNode* next;
+    size_t modCount;
 };
 
 List* List_new(void) {
