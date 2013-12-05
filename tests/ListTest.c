@@ -192,7 +192,7 @@ int main(void) {
     tests[8] = listIteratorFailWhileModify3;
     tests[9] = newListTest;
 
-    for(int i = 0; i < TEST_COUNT; i++) {
+    for(size_t i = 0; i < TEST_COUNT; i++) {
         // Setup the test
         List* l = List_new();
         // Launch the test
