@@ -34,12 +34,27 @@ $>> abs(x)
 ans = 1
 ```
 
-Compilation
+Building it
 ===========
 
 You must have
-* gcc (on MAC OS make sure it's not LLVM hidden behind gcc cmd). For now, in the Makefile, it's gcc-4.2
+* clang
+* valgrind
+
+and you just type
+
+```
+make
+````
+
+For code coverage report, you need also
+* gcc (on MAC OS make sure it's not LLVM hidden behind gcc cmd)
 * gcov
 * lcov (can be installed on MAC OS by compiling source and remove -D option from lcov/bin/install.sh)
-* valgrind
+
+and you enter
+
+```
+make coverage
+```
 
