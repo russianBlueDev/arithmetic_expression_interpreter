@@ -27,7 +27,6 @@ $(TARGET): $(BINDIR)/main.c $(OBJ)
 	@echo "Linking successfull"
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
-	@echo $(CC)
 	@$(CC) -o $@ -c $< $(CFLAGS)
 	@echo "Compiled "$<" successfully"
 
