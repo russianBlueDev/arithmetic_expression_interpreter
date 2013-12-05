@@ -3,8 +3,8 @@
 */
 
 #include <assert.h>
-#include "List.h";
-#include "Lexer.h";
+#include "List.h"
+#include "Lexer.h"
 
 
 void badInputTest(char* msg) {
@@ -24,7 +24,7 @@ void largeNumberTest(char* msg) {
 
 
 int main(void) {
-    char* msg;
+    char* msg = NULL;
     emptyInputTest(msg);
     //badInputTest(msg);
     //largeNumberTest(msg);
