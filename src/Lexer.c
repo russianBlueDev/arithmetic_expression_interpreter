@@ -7,6 +7,8 @@
 #include <assert.h>
 #include <limits.h>
 #include "Lexer.h"
+#include "utils.h"
+
 
 bool isNum(const char c);
 int chartoInt(const char c);
@@ -22,18 +24,9 @@ List/*Token*/* Lexer_run(const char* const input, char** const msg)
     Token* token = NULL;
     while(input[index] != '\0') {
 
-        token = malloc(sizeof(Token));
+        token = xmalloc(sizeof(Token));
         List_add(listOfTokens, token);
-
-        if(!token) {
-            // Allocate new string for msg
-            //strcpy(*msg, "Lexer Error: Allocation of token failed");
-            // Use iterator to first free the tokens and then delete the list
-            List_delete(&listOfTokens);
-            return NULL;
-        }
         token->value = NULL;
-
 
         // Integer constant
         if(isNum(input[index])) {
@@ -52,7 +45,7 @@ List/*Token*/* Lexer_run(const char* const input, char** const msg)
             }
 
             token->type = Integer;
-            token->value = malloc(sizeof(int));
+            token->value = xmalloc(sizeof(int));
             *((int*)(token->value)) = num;
         } 
 
@@ -93,7 +86,7 @@ int chartoInt(const char c) {
 void errorMessage(const char* const input, const size_t indexError,
                   const char* const error, char** const msg) {
     // error\ninput\ninput\0
-    *msg = calloc(strlen(error) + 2*(strlen(input)) + 3, sizeof(char));
+    *msg = xcalloc(strlen(error) + 2*(strlen(input)) + 3, sizeof(char));
     // TODO handle msg == NULL
     int index = 0;
     strcpy(*msg, error);

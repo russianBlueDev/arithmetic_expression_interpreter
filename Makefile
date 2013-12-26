@@ -1,8 +1,8 @@
 CC       = clang
-CFLAGS   = -g -std=c99 -Wall -Wextra -I$(SRCDIR) `pkg-config --cflags glib-2.0`
+CFLAGS   = -g -std=c99 -Wall -Wextra -I$(SRCDIR)
 
 LINKER   = clang -o
-LFLAGS   = -Wall -Wextra `pkg-config --libs glib-2.0`
+LFLAGS   = -Wall -Wextra
 
 SRCDIR   = src
 OBJDIR   = obj

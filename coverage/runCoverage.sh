@@ -9,4 +9,5 @@ mv *.gcda *.gcno coverage/
 lcov --capture --directory . --output-file coverage/coverage.info 1>/dev/null 2>&1
 # Remove files from std library or kernel from coverage
 lcov --remove coverage/coverage.info "/usr*" -o coverage/coverage.info 1>/dev/null 2>&1
+lcov --remove coverage/coverage.info "utils*" -o coverage/coverage.info 1>/dev/null 2>&1
 genhtml coverage/coverage.info --output-directory coverage/

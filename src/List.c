@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "List.h"
+#include "utils.h"
 
 struct ListNode {
     struct ListNode* next;
@@ -26,13 +27,11 @@ struct _ListIterator {
 
 
 List* List_new(void) {
-    List* l = malloc(sizeof(List));
-    if(l) {
-        l->head = NULL;
-        l->last = NULL;
-        l->size = 0;
-        l->modCount = 0;
-    }
+    List* l = xmalloc(sizeof(List));
+    l->head = NULL;
+    l->last = NULL;
+    l->size = 0;
+    l->modCount = 0;
     return l;
 }
 
@@ -45,27 +44,21 @@ void List_delete(List** const self) {
     *self = NULL;
 }
 
-ListErrorCode List_add(List* const self, void* const data) {
+void List_add(List* const self, void* const data) {
     assert(self); assert(data);
 
     struct ListNode* newLast = NULL;
 
     // If the list is not empty (i.e. there is a last element)
     if(self->last) {
-        self->last->next = malloc(sizeof(struct ListNode));
-        if(self->last->next == NULL) {
-            return LIST_ADD_FAILURE;
-        }
+        self->last->next = xmalloc(sizeof(struct ListNode));
         self->last = self->last->next;
         newLast = self->last;
     }
 
     // else create new head/last element
     else {
-        self->head = malloc(sizeof(struct ListNode));
-        if(self->head == NULL) {
-            return LIST_ADD_FAILURE;
-        }
+        self->head = xmalloc(sizeof(struct ListNode));
         self->last = self->head;
         newLast = self->head;
     }
@@ -75,8 +68,6 @@ ListErrorCode List_add(List* const self, void* const data) {
     newLast->next = NULL;
     self->size++;
     self->modCount++;
-
-    return LIST_ADD_SUCCESS;
 }
 
 size_t List_size(const List* const self) {
@@ -109,7 +100,7 @@ void List_removeHead(List* const self) {
 
 ListIterator* iterator(const List* const self) {
     assert(self);
-    ListIterator* iter = malloc(sizeof(ListIterator));
+    ListIterator* iter = xmalloc(sizeof(ListIterator));
     iter->list = self;
     iter->next = self->head;
     iter->modCount = self->modCount;

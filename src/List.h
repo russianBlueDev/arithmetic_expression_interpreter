@@ -12,21 +12,9 @@
 #include <stdbool.h>
 
 
-
 typedef struct _List List;
 
 typedef struct _ListIterator ListIterator;
-
-
-/**
-    \brief error codes when manipulating List
-*/
-typedef enum
-{
-    LIST_ADD_SUCCESS, /*!< No error when adding an element */
-    LIST_ADD_FAILURE /*!< Allocation failure on element adding */
-} ListErrorCode;
-
 
 
 /**
@@ -48,7 +36,7 @@ void List_delete(List** const self);
     \return LIST_ADD_SUCCESS if element was added, LIST_ADD_FAILURE in
     case of memory allocation error
 */
-ListErrorCode List_add(List* const self, void* const data);
+void List_add(List* const self, void* const data);
 
 /**
     \brief Returns the number of elements in the list
@@ -78,8 +66,6 @@ void List_removeHead(List* const self);
     \return an robust iterator on this list
 */
 ListIterator* iterator(const List* const self);
-
-
 
 /**
     \brief know if the iterator has other elements
