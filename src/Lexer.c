@@ -21,12 +21,16 @@ List/*Token*/* Lexer_run(const char* const input, char** const msg)
     List* listOfTokens = List_new();
 
     size_t index = 0;
-    Token* token = NULL;
+    
     while(input[index] != '\0') {
 
-        token = xmalloc(sizeof(Token));
-        List_add(listOfTokens, token);
-        token->value = NULL;
+        if(input[index] == ' ') {
+            index++;
+            continue;
+        }
+
+        TokenType tokenType = 0;
+        void* tokenValue = NULL;
 
         // Integer constant
         if(isNum(input[index])) {
@@ -35,8 +39,12 @@ List/*Token*/* Lexer_run(const char* const input, char** const msg)
             while(isNum(input[index])) {
                 if(INT_MAX/10 <= num) { // overflow
                     //strcpy(*msg, "Lexer Error: Number is too large");
-                    errorMessage(input, index, "Lexer error: Number is too large.", msg);
-                    List_delete(&listOfTokens);
+                    //errorMessage(input, index, "Lexer error: Number is too large.", msg);
+                    while(List_size(listOfTokens) > 0) {
+                        Token_delete(List_head(listOfTokens));
+                        List_removeHead(listOfTokens);
+                    }
+                    List_delete(listOfTokens);
                     return NULL;
                 }
                 num = num*10 + chartoInt(input[index]);
@@ -44,35 +52,60 @@ List/*Token*/* Lexer_run(const char* const input, char** const msg)
 
             }
 
-            token->type = Integer;
-            token->value = xmalloc(sizeof(int));
-            *((int*)(token->value)) = num;
+            tokenType = Integer;
+            tokenValue = xmalloc(sizeof(int));
         } 
 
         // Punctuation
         else if(input[index] == '+') {
-            token->type = Plus;
+            tokenType = Plus;
+            index++;
         } else if(input[index] == '-') {
-            token->type = Minus;
+            tokenType = Minus;
+            index++;
         } else if(input[index] == '*') {
-            token->type = Times;
+            tokenType = Times;
+            index++;
         } else if(input[index] == '/') {
-            token->type = Divides;
+            tokenType = Divides;
+            index++;
         } else if(input[index] == '(') {
-            token->type = LParen;
+            tokenType = LParen;
+            index++;
         } else if(input[index] == ')') {
-            token->type = RParen;
+            tokenType = RParen;
+            index++;
         }
 
         // Unknown character
         else {
             //strcpy(*msg, "Lexer Error: Unknown character");
-            List_delete(&listOfTokens);
+            while(List_size(listOfTokens) > 0) {
+                Token_delete(List_head(listOfTokens));
+                List_removeHead(listOfTokens);
+            }
+            List_delete(listOfTokens);
             return NULL;
         }
+
+        List_add(listOfTokens, Token_new(tokenType, tokenValue));
     }
 
     return listOfTokens;
+}
+
+Token* Token_new(TokenType type, void* value) {
+    Token *token = xmalloc(sizeof(Token));
+    token->type = type;
+    token->value = value;
+    return token; 
+}
+
+void Token_delete(Token* token) {
+    if(token->value != NULL) {
+        free(token->value);
+    }
+    free(token);
 }
 
 bool isNum(const char c) {

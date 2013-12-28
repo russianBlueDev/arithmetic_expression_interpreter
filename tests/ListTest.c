@@ -198,8 +198,8 @@ int main(void) {
         // Launch the test
         tests[i](l);
         // tear down the test
-        List_delete(&l);
-        assert(l == NULL);
+        List_delete(l);
+        l = NULL;
     }
 
     free(tests);

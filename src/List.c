@@ -35,13 +35,29 @@ List* List_new(void) {
     return l;
 }
 
-void List_delete(List** const self) {
-    assert(self); assert(*self);
-    while((*self)->size > 0)  {
-        List_removeHead(*self);
+void List_delete(List* const self) {
+    assert(self);
+    while(self->size > 0)  {
+        List_removeHead(self);
     }
-    free(*self);
-    *self = NULL;
+    free(self);
+}
+
+void List_deleteFull(List* self, void (*deleteFunction)(void*)) {
+    assert(self); assert(deleteFunction);
+    while(self->size > 0) {
+        deleteFunction(List_head(self));
+        List_removeHead(self);
+    }
+    free(self);
+}
+
+void List_print(List* self, void (*print)(void*)) {
+    assert(self); assert(print);
+    ListIterator* it = iterator(self);
+    while(ListIterator_hasNext(it)) {
+        print(ListIterator_next(it));
+    }
 }
 
 void List_add(List* const self, void* const data) {

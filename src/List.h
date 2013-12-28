@@ -27,7 +27,11 @@ List* List_new(void);
 *   \brief Delete a new List and set pointer to NULL
 *   \param self List to delete (pass by reference to set it to NULL)
 */
-void List_delete(List** const self);
+void List_delete(List* const self);
+
+void List_deleteFull(List* self, void (*deleteFunction)(void*));
+
+void List_print(List* self, void (*print)(void*));
 
 /**
     \brief Adds a new element at the end of the list
