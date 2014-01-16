@@ -18,7 +18,7 @@ void errorMessage(const char* const input, const size_t indexError,
 List/*Token*/* Lexer_run(const char* const input, char** const msg)
 {
     assert(input); assert(msg);
-    List* listOfTokens = List_new();
+    List* listOfTokens = NULL;
 
     size_t index = 0;
     
@@ -40,11 +40,11 @@ List/*Token*/* Lexer_run(const char* const input, char** const msg)
                 if(INT_MAX/10 <= num) { // overflow
                     //strcpy(*msg, "Lexer Error: Number is too large");
                     //errorMessage(input, index, "Lexer error: Number is too large.", msg);
-                    while(List_size(listOfTokens) > 0) {
-                        Token_delete(List_head(listOfTokens));
-                        List_removeHead(listOfTokens);
+                    while(size(listOfTokens) > 0) {
+                        Token_delete(head(listOfTokens));
+                        listOfTokens = tail(listOfTokens);
                     }
-                    List_delete(listOfTokens);
+                    delete(listOfTokens);
                     return NULL;
                 }
                 num = num*10 + chartoInt(input[index]);
@@ -80,15 +80,15 @@ List/*Token*/* Lexer_run(const char* const input, char** const msg)
         // Unknown character
         else {
             //strcpy(*msg, "Lexer Error: Unknown character");
-            while(List_size(listOfTokens) > 0) {
-                Token_delete(List_head(listOfTokens));
-                List_removeHead(listOfTokens);
+            while(size(listOfTokens) > 0) {
+                Token_delete(head(listOfTokens));
+                listOfTokens = tail(listOfTokens);
             }
-            List_delete(listOfTokens);
+            delete(listOfTokens);
             return NULL;
         }
 
-        List_add(listOfTokens, Token_new(tokenType, tokenValue));
+        listOfTokens = cons(Token_new(tokenType, tokenValue), listOfTokens);
     }
 
     return listOfTokens;

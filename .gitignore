@@ -20,3 +20,5 @@
 
 #other
 *.dSYM
+*.sublime-project
+*.sublime-workspace

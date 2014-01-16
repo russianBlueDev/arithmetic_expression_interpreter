@@ -1,104 +1,79 @@
 /*
-    \file List.h
-    \brief Simple Linked List for generic data
+    A simple single-linked List
+    ===========================
 
-    A simple linked list interface for generic data
+    Example of use:
+    ---------------
+
+    // x,y,z are int pointers
+    NULL                        // {} empty List
+    List* l = cons(z, NULL);    // l = {z}
+    l = cons(1, cons(2, l));    // l = {x,y,z}
+    size(l);                    // 3
+    l = reverse(l)              // l = {z,y,x}
+    head(l)                     // x
+    tail(l)                     // {y,z}
+    delete(l)                   // x,y,z are still allocated
+
+    NB. You should handle carefully deallocation of the List nodes
+    by either using free for a single node or 
+    delete/deleteFull for a full list.
 */
 
 #ifndef LIST_H
 #define LIST_H
 
 #include <stdlib.h>
-#include <stdbool.h>
 
+typedef struct List {
+    void* head;
+    struct List* tail;
+} List;
 
-typedef struct _List List;
-
-typedef struct _ListIterator ListIterator;
-
-
-/**
-*   \brief Creates a new List
-*   \return a new empty List
+/*
+    Append data in front of list and returns this new list
+    Use NULL as empty list
 */
-List* List_new(void);
+List* cons(void* data, List* list);
 
-/**
-*   \brief Delete a new List and set pointer to NULL
-*   \param self List to delete (pass by reference to set it to NULL)
+/*
+    Returns the first element of list
 */
-void List_delete(List* const self);
+void* head(const List* list);
 
-void List_deleteFull(List* self, void (*deleteFunction)(void*));
-
-void List_print(List* self, void (*print)(void*));
-
-/**
-    \brief Adds a new element at the end of the list
-    \param self the list
-    \param data the element to add
-    \return LIST_ADD_SUCCESS if element was added, LIST_ADD_FAILURE in
-    case of memory allocation error
+/*
+    Returns the same list without his first element
+    Do not forget to free this first element
 */
-void List_add(List* const self, void* const data);
+List* tail(const List* list);
 
-/**
-    \brief Returns the number of elements in the list
-    \param self the list
-    \return the size of the list (size >= 0)
+/*
+    Compute the number of elements of list
 */
-size_t List_size(const List* const self);
+size_t size(const List* list);
 
-/**
-    \brief Return the first element of the list
-    \param self the list
-    \return the first element
+/*
+    Print the list, applying printFn to print each element
 */
-void* List_head(const List* const self);
+void print(const List* list, void (*print)(const void*));
 
-/**
-*   \brief Remove the first element of the non-empty list
-*   \param self the list
-*
-*   If the list is empty, it does nothing
+/*
+    Returns list reversed
+    It doesn't copy list but modifies it directly so your list
+    pointer will now be the end of the List. Therefore you should
+    always do as follows:
+        list = reverse(list);
 */
-void List_removeHead(List* const self);
+List* reverse(List* list);
 
-/**
-    \brief Get an fail-fast iterator on this list
-    \param self the list
-    \return an robust iterator on this list
+/*
+    Deallocate all nodes of list (but not their data)
 */
-ListIterator* iterator(const List* const self);
+void delete(List* list);
 
-/**
-    \brief know if the iterator has other elements
-    \param self the iterator
-    \param hasNext output parameter that tell if there is other elements
-    \return if the list was modified since the creation of this iterator
+/*
+    Deallocate all nodes of list and their data using deleteFn
 */
-bool ListIterator_safeHasNext(const ListIterator* const self, bool* const hasNext);
-
-/**
-    \brief get the next element from iterator
-    \param self the iterator
-    \param data output paramater for the data to get
-    \return if the list was modified since the creation of this iterator
-*/
-bool ListIterator_safeNext(ListIterator* const self, void** const data);
-
-/**
-    \brief know if the iterator has other elements
-    \param self the iterator whose list must not have been modified
-    \return if the iterator has other elements
-*/
-bool ListIterator_hasNext(const ListIterator* const self);
-
-/**
-    \brief get the next element from iterator
-    \param self the iterator whose list must not have been modified
-    \return the next element
-*/
-void* ListIterator_next(ListIterator* const self);
+void deleteFull(List* list, void (*deleteFn)(void*));
 
 #endif
